@@ -1,17 +1,101 @@
-import Head from 'next/head'
-import styles from '../styles/Home.module.css';
+// https://nextjs.org/learn/basics/create-nextjs-app
+// https://nextjs.org/docs/routing/introduction
 
-export default function Home() {
+// Index.js = HOME
+
+/*
+Link Component
+When linking between pages on websites, you use the <a> HTML tag.
+
+In Next.js, you can use the Link Component next/link to link between pages in your application. <Link> allows you to do client-side navigation and accepts props that give you better control over the navigation behavior.
+*/ 
+
+// disabled
+import Link from 'next/link';
+import Date from '../components/date';
+// follow back: https://nextjs.org/learn/basics/dynamic-routes/polishing-index-page
+
+import Head from 'next/head'
+import Layout, { siteTitle } from '../components/layout';
+import utilStyles from '../styles/utils.module.css';
+// Now, we need to add an import for getSortedPostsData and call it inside getStaticProps in pages/index.js.
+// Link: https://nextjs.org/learn/basics/data-fetching/implement-getstaticprops
+// Open pages/index.js in your editor and add the following code above the exported Home component:
+import { getSortedPostsData } from '../lib/posts';
+
+// By returning allPostsData inside the props object in getStaticProps, the blog posts will be passed to the Home component as a prop. Now you can access the blog posts like so:
+export default function Home({ allPostsData }) {
   return (
+    <Layout home>
+      <Head>
+        <title>{siteTitle}</title>
+      </Head>
+      <section className={utilStyles.headingMd}>
+        <p>[Hello world! This is Kit! I am a Jr. Full Stack Web Dev. You can contact me at kitdamreik@gmail.com.]</p>
+        {/* <p>
+          (This is a sample website - you’ll be building a site like this on{' '}
+          <a href="https://nextjs.org/learn">our Next.js tutorial</a>.)
+        </p> */}
+      </section>
+      {/* Keep the existing code here */}
+
+      {/* Add this <section> tag below the existing <section> tag */}
+      <section className={`${utilStyles.headingMd} ${utilStyles.padding1px}`}>
+        <h2 className={utilStyles.headingLg}>Blog</h2>
+        <ul className={utilStyles.list}>
+          {allPostsData.map(({ id, date, title }) => (
+            // original code:
+            /* 
+            <li className={utilStyles.listItem} key={id}>
+            {title}
+            <br />
+            {id}
+            <br />
+            {date}
+            </li>
+            */ 
+            
+            // replace with:
+            <li className={utilStyles.listItem} key={id}>
+              <Link href={`/posts/${id}`}>{title}</Link>
+              <br />
+              <small className={utilStyles.lightText}>
+                <Date dateString={date} />
+              </small>
+            </li>
+            /*
+            
+            */ 
+          ))}
+        </ul>
+      </section>
+    </Layout>
+  )
+}
+
+export async function getStaticProps() {
+  const allPostsData = getSortedPostsData();
+  return {
+    props: {
+      allPostsData,
+    },
+  };
+}
+
+// Why this code was commented out: https://nextjs.org/learn/basics/assets-metadata-css/polishing-layout
+/*
     <div className={styles.container}>
+      <Head> is a React Component that is built into Next.js. It allows you to modify the <head> of a page. Link: https://nextjs.org/docs/api-reference/next/head 
+    
       <Head>
         <title>Create Next App</title>
         <link rel="icon" href="/favicon.ico" />
       </Head>
-
       <main>
         <h1 className={styles.title}>
-          Welcome to <a href="https://nextjs.org">Next.js!</a>
+          Learn <a href="https://nextjs.org">Next.js!</a> 
+          Note: You create routes as files under pages and use the built-in Link component. If you need to link to an external page outside the Next.js app, just use an <a> tag without Link. 
+          Read <Link href="/posts/first-post">this page!</Link>
         </h1>
 
         <p className={styles.description}>
@@ -111,5 +195,4 @@ export default function Home() {
         }
       `}</style>
     </div>
-  )
-}
+    */

@@ -1,0 +1,15 @@
+/* Docs: https://github.com/JedWatson/classnames */
+/* Next.js: https://nextjs.org/learn/basics/assets-metadata-css/styling-tips */
+
+/* 
+
+Suppose that you want to create an Alert component which accepts type, which can be 'success' or 'error'.
+If it's 'success', you want the text color to be green. If it's 'error', you want the text color to be red.
+*/
+
+.success {
+    color: green;
+}
+.error {
+    color: red;
+}
