@@ -2,6 +2,7 @@
 // https://nextjs.org/docs/routing/introduction
 
 // Index.js = HOME
+// DO NOT TOUCH
 
 /*
 Link Component
@@ -10,9 +11,7 @@ When linking between pages on websites, you use the <a> HTML tag.
 In Next.js, you can use the Link Component next/link to link between pages in your application. <Link> allows you to do client-side navigation and accepts props that give you better control over the navigation behavior.
 */ 
 
-// disabled
-import Link from 'next/link';
-import Date from '../components/date';
+
 // follow back: https://nextjs.org/learn/basics/dynamic-routes/polishing-index-page
 
 import Head from 'next/head'
@@ -22,6 +21,8 @@ import utilStyles from '../styles/utils.module.css';
 // Link: https://nextjs.org/learn/basics/data-fetching/implement-getstaticprops
 // Open pages/index.js in your editor and add the following code above the exported Home component:
 import { getSortedPostsData } from '../lib/posts';
+import Link from 'next/link';
+import Date from '../components/date';
 
 // By returning allPostsData inside the props object in getStaticProps, the blog posts will be passed to the Home component as a prop. Now you can access the blog posts like so:
 export default function Home({ allPostsData }) {
@@ -37,15 +38,29 @@ export default function Home({ allPostsData }) {
           <a href="https://nextjs.org/learn">our Next.js tutorial</a>.)
         </p> */}
       </section>
-      {/* Keep the existing code here */}
-
-      {/* Add this <section> tag below the existing <section> tag */}
       <section className={`${utilStyles.headingMd} ${utilStyles.padding1px}`}>
         <h2 className={utilStyles.headingLg}>Blog</h2>
         <ul className={utilStyles.list}>
           {allPostsData.map(({ id, date, title }) => (
-            // original code:
-            /* 
+              <li className={utilStyles.listItem} key={id}>
+                <Link href={`/posts/${id}`}>{title}</Link>
+                <br />
+                <small className={utilStyles.lightText}>
+                  <Date dateString={date} />
+                </small>
+              </li>
+            ))}
+        </ul>
+      </section>
+      {/* Keep the existing code here */}
+    {/* MATCHES GITHUB REPO ABOVE */}
+
+    {/* original code: 
+        <section className={`${utilStyles.headingMd} ${utilStyles.padding1px}`}>
+        <h2 className={utilStyles.headingLg}>Blog</h2>
+        <ul className={utilStyles.list}>
+          {allPostsData.map(({ id, date, title }) => (
+            
             <li className={utilStyles.listItem} key={id}>
             {title}
             <br />
@@ -53,25 +68,17 @@ export default function Home({ allPostsData }) {
             <br />
             {date}
             </li>
-            */ 
-            
-            // replace with:
-            <li className={utilStyles.listItem} key={id}>
-              <Link href={`/posts/${id}`}>{title}</Link>
-              <br />
-              <small className={utilStyles.lightText}>
-                <Date dateString={date} />
-              </small>
-            </li>
-            /*
-            
-            */ 
           ))}
         </ul>
       </section>
+    
+      */}
     </Layout>
   )
 }
+
+{/* Keep the existing code here */}
+{/* MATCHES GITHUB REPO below */}
 
 export async function getStaticProps() {
   const allPostsData = getSortedPostsData();
