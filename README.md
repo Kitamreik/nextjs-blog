@@ -6,6 +6,10 @@
 * Explain Premise of Application:  
     * This project is a pantry management application that allows users to keep track of pantry items by adding or removing items and updating their quantities. The project uses Next.js as the frontend framework, Material UI for the UI components, and Firebase as the backend service. 
 
+* Reflections and Insights
+    * I learned how to integrate MDX, which allows you to write JSX (React components) within your Markdown files, enabling you to combine the simplicity of Markdown with the power of React!
+
+
 ---
 ## Getting Started - Installation and Setup Instructions
 
