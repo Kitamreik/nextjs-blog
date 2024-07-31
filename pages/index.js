@@ -4,6 +4,8 @@
 // Index.js = HOME
 // DO NOT TOUCH
 
+//July 2024: this a failsafe to work from for future apps
+
 /*
 Link Component
 When linking between pages on websites, you use the <a> HTML tag.
