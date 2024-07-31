@@ -4,9 +4,9 @@
 
 // req = HTTP incoming message, res = HTTP server response
 export default function handler(req, res) {
-    res.status(200).json({ text: 'Hello' });
+    res.status(200).json({ text: 'API functional' });
 
-    const email = req.body.email;
+    //const email = req.body.email;
     // Then save email to your database, etc...
 }
 
