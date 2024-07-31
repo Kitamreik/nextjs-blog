@@ -18,8 +18,8 @@ import styles from './layout.module.css';
 import utilStyles from '../styles/utils.module.css';
 import Link from 'next/link';
 
-const name = 'Site Dev';
-export const siteTitle = 'Next.js Sample Website';
+const name = 'Kit Fenrir Amreik (they/she)';
+export const siteTitle = 'Pantry Tracker App!';
 
 export default function Layout({ children, home }) {
   return (

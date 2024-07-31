@@ -11,6 +11,11 @@ When linking between pages on websites, you use the <a> HTML tag.
 In Next.js, you can use the Link Component next/link to link between pages in your application. <Link> allows you to do client-side navigation and accepts props that give you better control over the navigation behavior.
 */ 
 
+//2024 Headstarter Pantry App: Using Material UI
+import * as React from 'react';
+import Button from '@mui/material/Button';
+import Typography from '@mui/material/Typography';
+import Container from '@mui/material/Container';
 
 // follow back: https://nextjs.org/learn/basics/dynamic-routes/polishing-index-page
 
@@ -27,53 +32,69 @@ import Date from '../components/date';
 // By returning allPostsData inside the props object in getStaticProps, the blog posts will be passed to the Home component as a prop. Now you can access the blog posts like so:
 export default function Home({ allPostsData }) {
   return (
-    <Layout home>
-      <Head>
-        <title>{siteTitle}</title>
-      </Head>
-      <section className={utilStyles.headingMd}>
-        <p>[Hello world! This is Kit! I am a Jr. Full Stack Web Dev. You can contact me at kitdamreik@gmail.com.]</p>
-        {/* <p>
-          (This is a sample website - you’ll be building a site like this on{' '}
-          <a href="https://nextjs.org/learn">our Next.js tutorial</a>.)
-        </p> */}
-      </section>
-      <section className={`${utilStyles.headingMd} ${utilStyles.padding1px}`}>
-        <h2 className={utilStyles.headingLg}>Blog</h2>
-        <ul className={utilStyles.list}>
-          {allPostsData.map(({ id, date, title }) => (
+    <Container maxWidth="sm">
+      <Layout home>
+        <Head>
+          <title>{siteTitle}</title>
+        </Head>
+        <section className={utilStyles.headingMd}>
+          <p>Hello world! Welcome to my application! </p>
+          {/* <p>
+            (This is a sample website - you’ll be building a site like this on{' '}
+            <a href="https://nextjs.org/learn">our Next.js tutorial</a>.)
+          </p> */}
+        </section>
+        <section className={`${utilStyles.headingMd} ${utilStyles.padding1px}`}>
+          <span>
+          <h2 className={utilStyles.headingLg}>About this project</h2>
+          {/* refactor this to reflect headstarter */}
+          <Link href="/posts/about-project" passHref>
+              <Button variant="contained" color="primary">
+                Go to About Page
+              </Button>
+            </Link>
+          </span>
+        <h2 className={utilStyles.headingLg}>Pantry Entries</h2>
+
+          <h2 className={utilStyles.headingLg}>Information about Next.js</h2>
+          <ul className={utilStyles.list}>
+            {allPostsData.map(({ id, date, title }) => (
+                <li className={utilStyles.listItem} key={id}>
+                  <Link href={`/posts/${id}`}>{title}</Link>
+                  <br />
+                  <small className={utilStyles.lightText}>
+                    <Date dateString={date} />
+                  </small>
+                </li>
+              ))}
+          </ul>
+        </section>
+        <section>
+          
+        </section>
+        {/* Keep the existing code here */}
+      {/* MATCHES GITHUB REPO ABOVE */}
+
+      {/* original code: 
+          <section className={`${utilStyles.headingMd} ${utilStyles.padding1px}`}>
+          <h2 className={utilStyles.headingLg}>Blog</h2>
+          <ul className={utilStyles.list}>
+            {allPostsData.map(({ id, date, title }) => (
+              
               <li className={utilStyles.listItem} key={id}>
-                <Link href={`/posts/${id}`}>{title}</Link>
-                <br />
-                <small className={utilStyles.lightText}>
-                  <Date dateString={date} />
-                </small>
+              {title}
+              <br />
+              {id}
+              <br />
+              {date}
               </li>
             ))}
-        </ul>
-      </section>
-      {/* Keep the existing code here */}
-    {/* MATCHES GITHUB REPO ABOVE */}
-
-    {/* original code: 
-        <section className={`${utilStyles.headingMd} ${utilStyles.padding1px}`}>
-        <h2 className={utilStyles.headingLg}>Blog</h2>
-        <ul className={utilStyles.list}>
-          {allPostsData.map(({ id, date, title }) => (
-            
-            <li className={utilStyles.listItem} key={id}>
-            {title}
-            <br />
-            {id}
-            <br />
-            {date}
-            </li>
-          ))}
-        </ul>
-      </section>
-    
-      */}
-    </Layout>
+          </ul>
+        </section>
+      
+        */}
+      </Layout>
+    </Container>
   )
 }
 
@@ -88,6 +109,7 @@ export async function getStaticProps() {
     },
   };
 }
+
 
 // Why this code was commented out: https://nextjs.org/learn/basics/assets-metadata-css/polishing-layout
 /*
