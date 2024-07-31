@@ -46,16 +46,23 @@ export default function Home({ allPostsData }) {
         </section>
         <section className={`${utilStyles.headingMd} ${utilStyles.padding1px}`}>
           <span>
-          <h2 className={utilStyles.headingLg}>About this project</h2>
-          {/* refactor this to reflect headstarter */}
-          <Link href="/posts/about-project" passHref>
-              <Button variant="contained" color="primary">
-                Go to About Page
-              </Button>
+            <h2 className={utilStyles.headingLg}>About this project</h2>
+            <Link href="/about" passHref>
+                <Button variant="contained" color="primary">
+                  Go to About Page
+                </Button>
             </Link>
           </span>
-        <h2 className={utilStyles.headingLg}>Pantry Entries</h2>
-
+          <span>
+            <h2 className={utilStyles.headingLg}>Pantry Entries</h2>
+             <Link href="/pantry-log" passHref>
+                <Button variant="contained" color="secondary">
+                  Go to App
+                </Button>
+            </Link>
+          </span>
+          <hr />
+          <span>
           <h2 className={utilStyles.headingLg}>Information about Next.js</h2>
           <ul className={utilStyles.list}>
             {allPostsData.map(({ id, date, title }) => (
@@ -68,9 +75,7 @@ export default function Home({ allPostsData }) {
                 </li>
               ))}
           </ul>
-        </section>
-        <section>
-          
+          </span>
         </section>
         {/* Keep the existing code here */}
       {/* MATCHES GITHUB REPO ABOVE */}
@@ -105,11 +110,10 @@ export async function getStaticProps() {
   const allPostsData = getSortedPostsData();
   return {
     props: {
-      allPostsData,
+      allPostsData
     },
   };
 }
-
 
 // Why this code was commented out: https://nextjs.org/learn/basics/assets-metadata-css/polishing-layout
 /*

@@ -5,13 +5,15 @@
   "scripts": {
     "dev": "next dev",
     "build": "next build",
-    "start": "next start", 
+    "start": "next start",
     "lint": "next lint"
   },
   "dependencies": {
     "@emotion/react": "^11.13.0",
     "@emotion/styled": "^11.13.0",
+    "@mdx-js/loader": "^3.0.1",
     "@mui/material": "^5.16.6",
+    "@next/mdx": "^14.2.5",
     "classmates": "^1.0.1",
     "date-fns": "^3.6.0",
     "gray-matter": "^4.0.3",
