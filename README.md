@@ -49,7 +49,7 @@ npm update
 ___
 ## Developer and Contact Info
 Kit Fenrir Amreik (they/she)
-* Email: kitdamreik@gmail.com, subject: “GitHub Personal Project”
+* Email: kitdamreik@gmail.com, subject: “GitHub Pantry App”
 * [Portfolio](https://kit-fenrir-amreik-portfolio.onrender.com/)
 * [LinkedIn](https://www.linkedin.com/in/kit-amreik/)
 
