@@ -31,6 +31,7 @@ import Date from '../components/date';
 
 // By returning allPostsData inside the props object in getStaticProps, the blog posts will be passed to the Home component as a prop. Now you can access the blog posts like so:
 export default function Home({ allPostsData }) {
+
   return (
     <Container maxWidth="sm">
       <Layout home>
@@ -55,9 +56,9 @@ export default function Home({ allPostsData }) {
           </span>
           <span>
             <h2 className={utilStyles.headingLg}>Pantry Entries</h2>
-             <Link href="/pantry-log" passHref>
+             <Link href="/firebase-pantry" passHref>
                 <Button variant="contained" color="secondary">
-                  Go to App
+                  Go to Firebase Pantry 
                 </Button>
             </Link>
           </span>
@@ -114,6 +115,7 @@ export async function getStaticProps() {
     },
   };
 }
+
 
 // Why this code was commented out: https://nextjs.org/learn/basics/assets-metadata-css/polishing-layout
 /*
