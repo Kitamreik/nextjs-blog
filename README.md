@@ -9,13 +9,7 @@
 ---
 ## Getting Started - Installation and Setup Instructions
 
-First, run the development server:
-
-```bash
-npm run dev
-```
-
-## Running the development server
+### Running the development server
 Run 
 ```bash
 npm i
