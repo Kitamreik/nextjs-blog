@@ -6,7 +6,7 @@ import { Box, Stack, Typography, Button, Modal, TextField, Container } from '@mu
 // import Head from 'next/head'
 // import Layout, { siteTitle } from '../components/layout';
 // import utilStyles from '../styles/utils.module.css';
-import mockData from '../data/data'
+import styles from "../components/search.module.css";
 import Link from 'next/link';
 import { firestore } from '../lib/firebase'
 import {
@@ -36,10 +36,8 @@ import {
       gap: 3,
     }
 
-export default function Pantry({ mockData }) {
-    //firebase implementation
-    const [data, setData] = useState([]);
-    //inventory state management: These will manage our inventory list, modal state, and new item input respectively.
+export default function Pantry({ }) {
+    //firebase implementation - inventory state management: These will manage our inventory list, modal state, and new item input respectively.
     const [inventory, setInventory] = useState([])
     const [open, setOpen] = useState(false)
     const [itemName, setItemName] = useState('')
@@ -50,7 +48,7 @@ export default function Pantry({ mockData }) {
 
     //This function queries the ‘inventory’ collection in Firestore and updates our local state. The `useEffect` hook ensures this runs when the component mounts.
     const updateInventory = async () => {
-        const snapshot = query(collection(firestore, 'inventory'))
+        const snapshot = query(collection(firestore, 'testing'))
         const docs = await getDocs(snapshot)
         const inventoryList = []
         docs.forEach((doc) => {
@@ -65,7 +63,7 @@ export default function Pantry({ mockData }) {
 
       //implement add and remove functions to update state
       const addItem = async (item) => {
-        const docRef = doc(collection(firestore, 'inventory'), item)
+        const docRef = doc(collection(firestore, 'testing'), item)
         const docSnap = await getDoc(docRef)
         if (docSnap.exists()) {
           const { quantity } = docSnap.data()
@@ -76,8 +74,11 @@ export default function Pantry({ mockData }) {
         await updateInventory()
       }
       
+      //add updating items
+
+      
       const removeItem = async (item) => {
-        const docRef = doc(collection(firestore, 'inventory'), item)
+        const docRef = doc(collection(firestore, 'testing'), item)
         const docSnap = await getDoc(docRef)
         if (docSnap.exists()) {
           const { quantity } = docSnap.data()
@@ -94,19 +95,43 @@ export default function Pantry({ mockData }) {
       const handleClose = () => setOpen(false)
 
       //search function  
-        const handleSearch = async (event) => {
-        const value = event.target.value;
-        setQuery(value);
-        if (value.length > 2) {
-            const filteredResults = data.filter(item => 
-            item.name.toLowerCase().includes(value.toLowerCase())
-            );
-            setResults(filteredResults);
-        } else {
-            setResults([]);
-        }
-        };
+      const handleSearch = async (event, item) => {
+        //Track the event in the console
+      const value = event.target.value;
+      setQuery(value);
+      let len = value.length
+      console.log(value, len)
 
+      if (value && len > 2) {
+        console.log("Activating search..", value)
+          const filteredResults = inventory.filter(item => 
+          item.name.toLowerCase().includes(value.toLowerCase())
+          );
+          console.log("Filtered res:",filteredResults)
+          setResults(filteredResults);
+      } else {
+          setResults([]);
+      }
+
+      const snapshot = query(collection(firestore, 'testing'))
+      const docs = await getDocs(snapshot)
+
+      //firebase data detection
+      if (docs) {
+        console.log("Data detection", docs)
+        } else {
+        console.log("Data missing")
+        }
+
+        // await handleSearch()
+      };
+
+      //once you call the useEffect, disable console tracking - not operational
+      /*
+      useEffect(() => {
+        handleSearch()
+      }, [])
+      */
       return (
         <Box
           width="100vw"
@@ -171,17 +196,52 @@ export default function Pantry({ mockData }) {
               display={'flex'}
               justifyContent={'center'}
               alignItems={'center'}>
-                <input
-                type="text"
-                value={search}
-                onChange={handleSearch}
-                placeholder="Search..."
+                <TextField
+                  id="outlined-basic"
+                  label="Search"
+                  type="text"
+                  variant="outlined"
+                  value={search} 
+                  onChange={handleSearch}
+                  placeholder="Type here..."
+                 className={styles.searchInput}
                 />
-                <ul>
-                {results.map((result, index) => (
-                    <li key={index}>{result.name}</li>
-                ))}
-                </ul>
+                {/* the search bar will trigger the search automatically */}
+                {/* 
+                        <Button type="submit" variant="outlined"
+                    onClick={() => {
+                    handleSearch()
+                    }}>
+                    Search
+                </Button>
+                */}
+            </Box>
+            <br />
+            <Box>
+                  {/* BASIC VERSION OF SEARCH */}
+                {/* 
+                     <span>
+                    <ul>
+                        <p>Match Detected in Database: </p>
+                    {results.map((result, index) => (
+                        <li key={index}>{result.name}</li>
+                    ))}
+                    </ul>
+                </span>
+                */}
+               
+               {/* INTERMEDIATE VERSION */}
+               <span>
+               {results.length > 0 ? (
+                    <ul className={styles.results}>
+                    {results.map((result, index) => (
+                        <li key={index} className={styles.resultItem}>Match Registered in the Database: {result.name}</li>
+                    ))}
+                    </ul>
+                ) : (
+                    search.length > 2 && <p>No results found. Please add an item.</p>
+                )}
+               </span>
             </Box>
             <Stack width="800px" height="300px" spacing={2} overflow={'auto'}>
               {inventory.map(({name, quantity}) => (
@@ -238,56 +298,5 @@ Explanation of the UI components:
 — Each item is displayed in its own `Box`, showing the item name (capitalized), quantity, and a remove button.
 */
 
-export async function Search({ data }) {
-  
-    const [query, setQuery] = useState('');
-    const [results, setResults] = useState([]);
-  
-    const handleSearch = (event) => {
-      const value = event.target.value;
-      setQuery(value);
-      if (value.length > 2) {
-        const filteredResults = data.filter(item => 
-          item.name.toLowerCase().includes(value.toLowerCase())
-        );
-        setResults(filteredResults);
-      } else {
-        setResults([]);
-      }
-    };
-  
-    return (
-      <div>
-        <input
-          type="text"
-          value={query}
-          onChange={handleSearch}
-          placeholder="Search..."
-        />
-        <ul>
-          {results.map((result, index) => (
-            <li key={index}>{result.name}</li>
-          ))}
-        </ul>
-      </div>
-    );
-  };
-
-//not functioning
-export async function FirebaseContainer() {
-    return(
-        <Box>
-            <Typography>
-            Here the entries are rendering from the database, in this case, Google Firebase.
-          </Typography>
-           <h2>Data from Firebase</h2>
-           <ul>
-             {firebaseData.map((item, index) => (
-               <li key={index}>{item.name}</li>
-             ))}
-           </ul>
-        </Box>
-    )
-}
 
 //Code-Along from: https://medium.com/@billzhangsc/building-an-inventory-management-app-with-next-js-react-and-firebase-e9647a61eb82

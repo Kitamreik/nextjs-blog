@@ -1,0 +1,18 @@
+/* components/Search.module.css */
+.searchInput {
+    padding: 10px;
+    margin-bottom: 20px;
+    width: 100%;
+    max-width: 400px;
+  }
+  
+  .results {
+    list-style-type: none;
+    padding: 0;
+  }
+  
+  .resultItem {
+    padding: 10px;
+    border-bottom: 1px solid #ccc;
+  }
+  
