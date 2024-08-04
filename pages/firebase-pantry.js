@@ -47,15 +47,6 @@ export default function Pantry({ }) {
         quantity: 1
     })
 
-    const handleAdd = (quantity) => {
-        console.log("test")
-        setEnd((prevState) =>{
-            const copy = {...prevState, quantity: start.quantity + 1}
-            console.log(copy)
-            return copy
-        }
-    )}
-
 
   //add updating items
 
@@ -75,6 +66,25 @@ export default function Pantry({ }) {
       useEffect(() => {
         updateInventory()
       }, [])
+
+
+    const handleAdd = async (item) => {
+        const docRef = doc(collection(firestore, 'testing'), item)
+        const docSnap = await getDoc(docRef)
+        if (docSnap.exists()) {
+          const { quantity } = docSnap.data()
+          await setDoc(docRef, { quantity: quantity + 1 })
+        } else {
+          console.log("Add failed")
+        }
+        await updateInventory()
+        console.log("test")
+        // setEnd((prevState) =>{
+        //     const copy = {...prevState, quantity: start.quantity + 1}
+        //     console.log(copy)
+        //     return copy
+        // })
+    }
 
       //implement add and remove functions to update state
       const addItem = async (item) => {
@@ -155,37 +165,44 @@ export default function Pantry({ }) {
                     This is the landing page of the pantry app. See if there is an entry that already exists in the database. This website is in the testing stage, so the administrator can see and track all entries. Please be respectful in your usage of this site.
                 </Typography>
                 <br />
-                    <Box>
-                    <Modal
-                    open={open}
-                    onClose={handleClose}
-                    aria-labelledby="modal-modal-title"
-                    aria-describedby="modal-modal-description"
-                    >
-                    <Box>
-                    <Typography id="modal-modal-title" variant="h6" component="h2">
-                    Add Item
-                    </Typography>
-                    <Stack width="auto" direction={'row'} spacing={1} >
-                    <TextField
-                        id="outlined-basic"
-                        label="Item"
-                        variant="outlined"
-                        fullWidth
-                        value={itemName}
-                        onChange={(e) => setItemName(e.target.value)}
-                    />
-                    <Button
-                        variant="outlined"
-                        onClick={() => {
-                        addItem(itemName)
-                        setItemName('')
-                        handleClose()
-                        }}
-                    >
-                        Add
-                    </Button>
-                    </Stack>
+                    <Box >
+                        <Modal
+                        open={open}
+                        onClose={handleClose}
+                        aria-labelledby="modal-modal-title"
+                        aria-describedby="modal-modal-description"
+                        >
+                    <Box
+                        width="auto"
+                        minHeight="150px"
+                        display={'flex'}
+                        justifyContent={'space-between'}
+                        alignItems={'center'}
+                        bgcolor={'#f0f0f0'}
+                        paddingX={5}>
+                        <Typography id="modal-modal-title" variant="h6" component="h2">
+                        Add Item
+                        </Typography>
+                        <Stack width="auto" height="150px" spacing={2} overflow={'auto'}>
+                        <TextField
+                            id="outlined-basic"
+                            label="Item"
+                            variant="outlined"
+                            fullWidth
+                            value={itemName}
+                            onChange={(e) => setItemName(e.target.value)}
+                        />
+                        <Button
+                            variant="outlined"
+                            onClick={() => {
+                            addItem(itemName)
+                            setItemName('')
+                            handleClose()
+                            }}
+                        >
+                            Add
+                        </Button>
+                        </Stack>
                     </Box>
                     </Modal>
                     <Box border={'1px solid #333'}>
@@ -222,7 +239,7 @@ export default function Pantry({ }) {
                     </Button>
                     {/* the search bar will trigger the search automatically */}
                     </Box>
-                    <Box bgcolor={"#01f4ab"}>
+                    <Box bgcolor={"#FFF4E4"}>
                         {/* BASIC VERSION OF SEARCH */}
                     {/* 
                             <span>
@@ -273,17 +290,6 @@ export default function Pantry({ }) {
                         Quantity: {quantity}
                         </Typography>
                         {/* add +/- button */}
-                        <Box key={quantity}width="auto"
-                        //height="100px"
-                        //bgcolor={'#'}
-                        display={'flex'}
-                        //justifyContent={'center'}
-                        alignItems={'center'}
-                    >
-                            {/* <Button variant="outlined" color='secondary' onClick={() => handleAdd(quantity)}>
-                            +
-                            </Button> */}
-                        </Box>
                         <Button variant="contained" onClick={() => removeItem(name)}>
                         Remove
                         </Button>
