@@ -43,6 +43,21 @@ export default function Pantry({ }) {
     const [itemName, setItemName] = useState('')
     const [search, setQuery] = useState('');
     const [results, setResults] = useState([]);
+    const [start, setEnd] = useState({
+        quantity: 1
+    })
+
+    const handleAdd = (quantity) => {
+        console.log("test")
+        setEnd((prevState) =>{
+            const copy = {...prevState, quantity: start.quantity + 1}
+            console.log(copy)
+            return copy
+        }
+    )}
+
+
+  //add updating items
 
     //implement inventory fetching from firestore
 
@@ -74,24 +89,7 @@ export default function Pantry({ }) {
         await updateInventory()
       }
       
-      //add updating items
-      const updateItem = async () => {
-        // const snapshot = query(collection(firestore, 'testing'))
-        // const docs = await getDocs(snapshot)
-        // const inventoryList = []
-        // docs.forEach((doc) => {
-        //   inventoryList.push({ name: doc.id, ...doc.data() })
-        // })
-        // setInventory(inventoryList)
-      }
-      /*
-      useEffect(() => {
-        updateItem()
-      }, [])
-      */
-      
-      
-      const removeItem = async (item) => {
+     const removeItem = async (item) => {
         const docRef = doc(collection(firestore, 'testing'), item)
         const docSnap = await getDoc(docRef)
         if (docSnap.exists()) {
@@ -223,14 +221,6 @@ export default function Pantry({ }) {
                     Add New Item
                     </Button>
                     {/* the search bar will trigger the search automatically */}
-                    {/* 
-                            <Button type="submit" variant="outlined"
-                        onClick={() => {
-                        handleSearch()
-                        }}>
-                        Search
-                    </Button>
-                    */}
                     </Box>
                     <Box bgcolor={"#01f4ab"}>
                         {/* BASIC VERSION OF SEARCH */}
@@ -259,8 +249,16 @@ export default function Pantry({ }) {
                     height="150px" spacing={2} overflow={'auto'}>
                     {inventory.map(({name, quantity}) => (
                     <Box
+                    /*
+                    width="auto"
+                    height="100px"
+                    bgcolor={'#ADD8E6'}
+                    display={'flex'}
+                    justifyContent={'center'}
+                    alignItems={'center'}
+                    */
                         key={name}
-                        width="100%"
+                        width="auto"
                         minHeight="150px"
                         display={'flex'}
                         justifyContent={'space-between'}
@@ -268,20 +266,29 @@ export default function Pantry({ }) {
                         bgcolor={'#f0f0f0'}
                         paddingX={5}
                     >
-                        <Typography variant={'h3'} color={'#333'} textAlign={'center'}>
+                        <Typography color={'#333'} >
                         {name.charAt(0).toUpperCase() + name.slice(1)}
                         </Typography>
-                        <Typography variant={'h3'} color={'#333'} textAlign={'center'}>
+                        <Typography color={'#333'} textAlign={'center'}>
                         Quantity: {quantity}
                         </Typography>
+                        {/* add +/- button */}
+                        <Box key={quantity}width="auto"
+                        //height="100px"
+                        //bgcolor={'#'}
+                        display={'flex'}
+                        //justifyContent={'center'}
+                        alignItems={'center'}
+                    >
+                            {/* <Button variant="outlined" color='secondary' onClick={() => handleAdd(quantity)}>
+                            +
+                            </Button> */}
+                        </Box>
                         <Button variant="contained" onClick={() => removeItem(name)}>
                         Remove
                         </Button>
                     </Box>
                     ))}
-                    <Button variant="contained" onClick={handleOpen}>
-                    Add New Item
-                    </Button>
                     </Stack>
                     </Box>
                     </Box>
