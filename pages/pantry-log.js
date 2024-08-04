@@ -8,7 +8,7 @@ import utilStyles from '../styles/utils.module.css';
 import Link from 'next/link';
 
 
-export default function Pantry() {
+export default function PantryFS() {
     return (
     <Container>
         <Layout>

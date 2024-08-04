@@ -3,9 +3,9 @@ import * as React from 'react';
 import { useEffect, useState } from 'react';
 //refactor mui packages into one line
 import { Box, Stack, Typography, Button, Modal, TextField, Container } from '@mui/material'
-// import Head from 'next/head'
-// import Layout, { siteTitle } from '../components/layout';
-// import utilStyles from '../styles/utils.module.css';
+import Head from 'next/head'
+import Layout, { siteTitle } from '../components/layout';
+import utilStyles from '../styles/utils.module.css';
 import styles from "../components/search.module.css";
 import Link from 'next/link';
 import { firestore } from '../lib/firebase'
@@ -75,7 +75,21 @@ export default function Pantry({ }) {
       }
       
       //add updating items
-
+      const updateItem = async () => {
+        // const snapshot = query(collection(firestore, 'testing'))
+        // const docs = await getDocs(snapshot)
+        // const inventoryList = []
+        // docs.forEach((doc) => {
+        //   inventoryList.push({ name: doc.id, ...doc.data() })
+        // })
+        // setInventory(inventoryList)
+      }
+      /*
+      useEffect(() => {
+        updateItem()
+      }, [])
+      */
+      
       
       const removeItem = async (item) => {
         const docRef = doc(collection(firestore, 'testing'), item)
@@ -133,150 +147,148 @@ export default function Pantry({ }) {
       }, [])
       */
       return (
-        <Box
-          width="100vw"
-          height="100vh"
-          display={'flex'}
-          justifyContent={'center'}
-          flexDirection={'column'}
-          alignItems={'center'}
-          gap={2}
-        >
-          <Modal
-            open={open}
-            onClose={handleClose}
-            aria-labelledby="modal-modal-title"
-            aria-describedby="modal-modal-description"
-          >
-            <Box sx={style}>
-              <Typography id="modal-modal-title" variant="h6" component="h2">
-                Add Item
-              </Typography>
-              <Stack width="100%" direction={'row'} spacing={2}>
-                <TextField
-                  id="outlined-basic"
-                  label="Item"
-                  variant="outlined"
-                  fullWidth
-                  value={itemName}
-                  onChange={(e) => setItemName(e.target.value)}
-                />
-                <Button
-                  variant="outlined"
-                  onClick={() => {
-                    addItem(itemName)
-                    setItemName('')
-                    handleClose()
-                  }}
-                >
-                  Add
-                </Button>
-              </Stack>
-            </Box>
-          </Modal>
-          <Button variant="contained" onClick={handleOpen}>
-            Add New Item
-          </Button>
-          <Box border={'1px solid #333'}>
-            <Box
-              width="800px"
-              height="100px"
-              bgcolor={'#ADD8E6'}
-              display={'flex'}
-              justifyContent={'center'}
-              alignItems={'center'}
-            >
-              <Typography variant={'h2'} color={'#333'} textAlign={'center'}>
-                Inventory Items
-              </Typography>
-            </Box>
-            <Box width="800px"
-              height="100px"
-              bgcolor={'#ADD8E6'}
-              display={'flex'}
-              justifyContent={'center'}
-              alignItems={'center'}>
-                <TextField
-                  id="outlined-basic"
-                  label="Search"
-                  type="text"
-                  variant="outlined"
-                  value={search} 
-                  onChange={handleSearch}
-                  placeholder="Type here..."
-                 className={styles.searchInput}
-                />
-                {/* the search bar will trigger the search automatically */}
-                {/* 
-                        <Button type="submit" variant="outlined"
-                    onClick={() => {
-                    handleSearch()
-                    }}>
-                    Search
-                </Button>
-                */}
-            </Box>
-            <br />
-            <Box>
-                  {/* BASIC VERSION OF SEARCH */}
-                {/* 
-                     <span>
-                    <ul>
-                        <p>Match Detected in Database: </p>
-                    {results.map((result, index) => (
-                        <li key={index}>{result.name}</li>
+        <Container>
+            <Layout>
+                <Head>
+                    <title>Pantry Database</title>
+                </Head>
+                <section className={utilStyles.headingMd}>
+                <Typography>
+                    This is the landing page of the pantry app. See if there is an entry that already exists in the database. This website is in the testing stage, so the administrator can see and track all entries. Please be respectful in your usage of this site.
+                </Typography>
+                <br />
+                    <Box>
+                    <Modal
+                    open={open}
+                    onClose={handleClose}
+                    aria-labelledby="modal-modal-title"
+                    aria-describedby="modal-modal-description"
+                    >
+                    <Box>
+                    <Typography id="modal-modal-title" variant="h6" component="h2">
+                    Add Item
+                    </Typography>
+                    <Stack width="auto" direction={'row'} spacing={1} >
+                    <TextField
+                        id="outlined-basic"
+                        label="Item"
+                        variant="outlined"
+                        fullWidth
+                        value={itemName}
+                        onChange={(e) => setItemName(e.target.value)}
+                    />
+                    <Button
+                        variant="outlined"
+                        onClick={() => {
+                        addItem(itemName)
+                        setItemName('')
+                        handleClose()
+                        }}
+                    >
+                        Add
+                    </Button>
+                    </Stack>
+                    </Box>
+                    </Modal>
+                    <Box border={'1px solid #333'}>
+                    <Box
+                    width="auto"
+                    height="150px"
+                    bgcolor={'#ADD8E6'} //change color
+                    display={'flex'}
+                    justifyContent={'center'}
+                    alignItems={'center'}
+                    >
+                    <Typography variant={'h5'} color={'#333'} textAlign={'center'}>
+                    Inventory Items
+                    </Typography>
+                    </Box>
+                    <Box width="auto"
+                    height="100px"
+                    bgcolor={'#ADD8E6'}
+                    display={'flex'}
+                    justifyContent={'center'}
+                    alignItems={'center'}>
+                    <TextField
+                        id="outlined-basic"
+                        label="Search"
+                        type="text"
+                        variant="outlined"
+                        value={search} 
+                        onChange={handleSearch}
+                        placeholder="Type here..."
+                        className={styles.searchInput}
+                    />
+                    <Button variant="contained" onClick={handleOpen}>
+                    Add New Item
+                    </Button>
+                    {/* the search bar will trigger the search automatically */}
+                    {/* 
+                            <Button type="submit" variant="outlined"
+                        onClick={() => {
+                        handleSearch()
+                        }}>
+                        Search
+                    </Button>
+                    */}
+                    </Box>
+                    <Box bgcolor={"#01f4ab"}>
+                        {/* BASIC VERSION OF SEARCH */}
+                    {/* 
+                            <span>
+                        <ul>
+                            <p>Match Detected in Database: </p>
+                        {results.map((result, index) => (
+                            <li key={index}>{result.name}</li>
+                        ))}
+                        </ul>
+                    </span>
+                    */}
+
+                    {/* INTERMEDIATE VERSION */}
+                   {results.length > 0 ? (
+                            <ul className={styles.results}>
+                            {results.map((result, index) => (
+                                <li key={index} className={styles.resultItem}>Match Registered in the Database: {result.name}</li>
+                            ))}
+                            </ul>
+                        ) : (
+                            search.length > 2 && <p>No results found. Please add an item.</p>
+                        )}
+                    <Stack width="auto"
+                    height="150px" spacing={2} overflow={'auto'}>
+                    {inventory.map(({name, quantity}) => (
+                    <Box
+                        key={name}
+                        width="100%"
+                        minHeight="150px"
+                        display={'flex'}
+                        justifyContent={'space-between'}
+                        alignItems={'center'}
+                        bgcolor={'#f0f0f0'}
+                        paddingX={5}
+                    >
+                        <Typography variant={'h3'} color={'#333'} textAlign={'center'}>
+                        {name.charAt(0).toUpperCase() + name.slice(1)}
+                        </Typography>
+                        <Typography variant={'h3'} color={'#333'} textAlign={'center'}>
+                        Quantity: {quantity}
+                        </Typography>
+                        <Button variant="contained" onClick={() => removeItem(name)}>
+                        Remove
+                        </Button>
+                    </Box>
                     ))}
-                    </ul>
-                </span>
-                */}
-               
-               {/* INTERMEDIATE VERSION */}
-               <span>
-               {results.length > 0 ? (
-                    <ul className={styles.results}>
-                    {results.map((result, index) => (
-                        <li key={index} className={styles.resultItem}>Match Registered in the Database: {result.name}</li>
-                    ))}
-                    </ul>
-                ) : (
-                    search.length > 2 && <p>No results found. Please add an item.</p>
-                )}
-               </span>
-            </Box>
-            <Stack width="800px" height="300px" spacing={2} overflow={'auto'}>
-              {inventory.map(({name, quantity}) => (
-                <Box
-                  key={name}
-                  width="100%"
-                  minHeight="150px"
-                  display={'flex'}
-                  justifyContent={'space-between'}
-                  alignItems={'center'}
-                  bgcolor={'#f0f0f0'}
-                  paddingX={5}
-                >
-                  <Typography variant={'h3'} color={'#333'} textAlign={'center'}>
-                    {name.charAt(0).toUpperCase() + name.slice(1)}
-                  </Typography>
-                  <Typography variant={'h3'} color={'#333'} textAlign={'center'}>
-                    Quantity: {quantity}
-                  </Typography>
-                  <Button variant="contained" onClick={() => removeItem(name)}>
-                    Remove
-                  </Button>
+                    <Button variant="contained" onClick={handleOpen}>
+                    Add New Item
+                    </Button>
+                    </Stack>
+                    </Box>
+                    </Box>
                 </Box>
-              ))}
-            </Stack>
-          </Box>
-          <Box>
-          <Link href="/" passHref>
-                <Button variant="outlined" color="primary">
-                  Go Back
-                </Button>
-            </Link>
-            </Box>
-        </Box>
-        
+                </section>
+            </Layout>
+            </Container>
       )
 }
 
