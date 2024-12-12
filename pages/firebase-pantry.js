@@ -17,7 +17,7 @@ import {
     setDoc,
     deleteDoc,
     getDoc,
-  } from 'firebase/firestore'
+  } from 'firebase/firestore';
 
 
   
@@ -54,37 +54,19 @@ export default function Pantry({ }) {
 
     //This function queries the ‘inventory’ collection in Firestore and updates our local state. The `useEffect` hook ensures this runs when the component mounts.
     const updateInventory = async () => {
-        const snapshot = query(collection(firestore, 'testing'))
-        const docs = await getDocs(snapshot)
-        const inventoryList = []
+        const snapshot = query(collection(firestore, 'testing'));
+        const docs = await getDocs(snapshot);
+        const inventoryList = [];
         docs.forEach((doc) => {
-          inventoryList.push({ name: doc.id, ...doc.data() })
-        })
-        setInventory(inventoryList)
-      }
+          inventoryList.push({ name: doc.id, ...doc.data() });
+        });
+        setInventory(inventoryList);
+      };
       
       useEffect(() => {
-        updateInventory()
-      }, [])
+        updateInventory();
+      }, []);
 
-
-    const handleAdd = async (item) => {
-        const docRef = doc(collection(firestore, 'testing'), item)
-        const docSnap = await getDoc(docRef)
-        if (docSnap.exists()) {
-          const { quantity } = docSnap.data()
-          await setDoc(docRef, { quantity: quantity + 1 })
-        } else {
-          console.log("Add failed")
-        }
-        await updateInventory()
-        console.log("test")
-        // setEnd((prevState) =>{
-        //     const copy = {...prevState, quantity: start.quantity + 1}
-        //     console.log(copy)
-        //     return copy
-        // })
-    }
 
       //implement add and remove functions to update state
       const addItem = async (item) => {
@@ -103,6 +85,11 @@ export default function Pantry({ }) {
         const docRef = doc(collection(firestore, 'testing'), item)
         const docSnap = await getDoc(docRef)
         if (docSnap.exists()) {
+          await deleteDoc(docRef);
+      } //basic
+
+      /*
+        if (docSnap.exists()) {
           const { quantity } = docSnap.data()
           if (quantity === 1) {
             await deleteDoc(docRef)
@@ -110,6 +97,8 @@ export default function Pantry({ }) {
             await setDoc(docRef, { quantity: quantity - 1 })
           }
         }
+      */
+      
         await updateInventory()
       }
       // adding modal control functions
@@ -145,7 +134,7 @@ export default function Pantry({ }) {
         console.log("Data missing")
         }
 
-        // await handleSearch()
+        //await handleSearch()
       };
 
       //once you call the useEffect, disable console tracking - not operational
